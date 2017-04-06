@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <sys/types.h>
-#include <attr/xattr.h>
+#include <sys/xattr.h>
 #include <sys/file.h>
 
 #include "getter.h"
@@ -30,7 +30,7 @@ static int dofetch( int fd ) {
 }
 
 int fetch_pending( int fd ) {
-	int result = -1;
+	int result = 0;
 
 	if( flock( fd, LOCK_EX ) == -1 )
 		return -1;
