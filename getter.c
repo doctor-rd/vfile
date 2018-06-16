@@ -11,9 +11,12 @@ int getter_httpget( int fd, char *url ) {
 	pid = fork();
 	switch( pid ) {
 	case 0:
-		dup2( fd, 1 );
-		close( fd );
-		execl( "/usr/bin/curl", "curl", url, NULL );
+		if( fd != 1 ) {
+			if( dup2( fd, 1 ) == -1 )
+				_exit( 1 );
+			close( fd );
+		}
+		execl( "/usr/bin/curl", "curl", url, (char*) NULL );
 	case -1:
 		return -1;
 	default:
