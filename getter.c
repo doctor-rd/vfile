@@ -17,10 +17,12 @@ int getter_httpget( int fd, char *url ) {
 			close( fd );
 		}
 		execl( "/usr/bin/curl", "curl", url, (char*) NULL );
+		_exit( 1 );
 	case -1:
 		return -1;
 	default:
-		waitpid( pid, &status, 0 );
+		if( waitpid( pid, &status, 0 ) == -1 )
+			return -1;
 		if( WIFEXITED( status ) && WEXITSTATUS( status ) == 0 )
 			return 0;
 		return -1;
